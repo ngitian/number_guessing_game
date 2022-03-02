@@ -112,11 +112,13 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
         {
             // game lost
             guessing = false;
+            gameResult[gameCounter] = false;
         }
         else if (strtol(userGuess, NULL, 10) == target)
         {
             printf("Guess is correct!\n");
             guessing = false;
+            gameResult[gameCounter] = true;
         }
         else if (strtol(userGuess, NULL, 10) < target)
         {
@@ -148,9 +150,8 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
             printf("%d\n", gameData[i]);
         }
     }
-    // process information for gameResult and gameData;
+    // process information for gameData;
     gameData[gameCounter] = roundsCounter;
-    gameResult[gameCounter] = true;
 
 }
 
@@ -182,7 +183,20 @@ void endGame(int gameCounter, const bool* gameResult, const int* gameData)
     // output result
     for (int i = 0; i < gameCounter; ++i)
     {
-        printf("game %d: win/lose with %d rounds\n", i + 1, gameData[i]);
+        printf("game %d: ", i + 1);
+        if (gameResult[i])
+        {
+            printf("lose");
+        }
+        else
+        {
+            printf("win");
+        }
+        printf(" with %d rounds\n", gameData[i]);
     }
 
+    // debug print
+    for (int i = 0; i < gameCounter; ++i) {
+        printf("%d\n", gameResult[i]);
+    }
 }
