@@ -19,7 +19,7 @@ print menu, read and run different inputs
 
 // prototype
 void endGame(int gameCounter, const bool* gameResult, const int* gameData);
-int changeMaxNumber();
+int changeMaxNumber(int maxNumber);
 void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData);
 
 int main() 
@@ -61,7 +61,7 @@ int main()
         } 
         else if (strcmp(menuInput,"2") == 0)
         {
-            maxNumber = changeMaxNumber();
+            maxNumber = changeMaxNumber(maxNumber);
         }
         else if (strcmp(menuInput,"3") == 0)
         {
@@ -155,20 +155,20 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
 
 }
 
-int changeMaxNumber()
+int changeMaxNumber(int maxNumber)
 {
     int result = -1;
-    while (result < 0 || result > 32767)
+    while (result <= 1 || result > maxNumber)
     {
-        printf("Enter a new max number >= 0 and < 32767: ");
+        printf("Enter a new max number > 1 and < %d: ", maxNumber);
         scanf("%d", &result);
-        if (result < 0)
+        if (result <= 1)
         {
-            printf("Max number can not be negative\n");
+            printf("Max number can not be less than min number\n");
         }
-        else if (result > 32767)
+        else if (result > maxNumber)
         {
-            printf("Max number can not exceed integer range\n");
+            printf("Max number can not exceed previous max number\n");
         }
     }
     return result;
@@ -195,8 +195,4 @@ void endGame(int gameCounter, const bool* gameResult, const int* gameData)
         printf(" with %d rounds\n", gameData[i]);
     }
 
-    // debug print
-    for (int i = 0; i < gameCounter; ++i) {
-        printf("%d\n", gameResult[i]);
-    }
 }
