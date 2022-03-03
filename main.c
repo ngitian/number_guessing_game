@@ -20,7 +20,7 @@ print menu, read and run different inputs
 // prototype
 void endGame(int gameCounter, const bool* gameResult, const int* gameData);
 int changeMaxNumber(int maxNumber);
-void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData);
+void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData, int *arraySize);
 
 int main() 
 {
@@ -34,8 +34,9 @@ int main()
     char menuInput[5];
     int maxNumber = 10;
     int gameCounter = 0;
-    bool* gameResult = malloc(2 * sizeof(bool));
-    int* gameData = malloc(2 * sizeof(int));
+    bool* gameResult = malloc(50 * sizeof(bool));
+    int* gameData = malloc(50 * sizeof(int));
+    int arraySize = 50;
 
     // check whether malloc is successful
     if (gameResult == NULL || gameData == NULL)
@@ -56,7 +57,7 @@ int main()
         // run different options depends on the menu input
         if (strcmp(menuInput,"1") == 0)
         {
-            startGame(maxNumber, gameCounter, gameResult, gameData);
+            startGame(maxNumber, gameCounter, gameResult, gameData, &arraySize);
             ++gameCounter;
         } 
         else if (strcmp(menuInput,"2") == 0)
@@ -83,7 +84,7 @@ int main()
 
 }
 
-void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
+void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData, int *arraySize)
 {
     // initialize target number
     time_t t;
@@ -101,7 +102,7 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
         ++roundsCounter;
 
         // user input guess
-        printf("Guess a number: ");
+        printf("Guess a number between 1 and %d: ", maxNumber);
         scanf("%s", userGuess);
 
         // evaluate user input with target
@@ -137,19 +138,18 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
     }
 
     // realloc if gameData and gameResult can't hold anymore memory
-    size_t size = sizeof(gameData) / sizeof(int);
-    printf("size: %lu\n", size);
-    if (size <= gameCounter)
+    if (*arraySize <= gameCounter)
     {
-        printf("Before, gameData size:%lu\n", sizeof(gameData));
-        gameData = realloc(gameData, size * 2 * sizeof(int));
-        gameResult = realloc(gameResult, size * 2 * sizeof(bool));
-        printf("After, gameData size:%lu\n", sizeof(gameData));
+        *arraySize *= 2;
+        gameData = realloc(gameData, *arraySize * sizeof(int));
+        gameResult = realloc(gameResult, *arraySize * sizeof(bool));
 
-        for (int i=0; i < gameCounter; ++i)
+        if (gameResult == NULL || gameData == NULL)
         {
-            printf("gamedata[%d] %d\n",i , gameData[i]);
+            printf("Error: unable to allocate required memory\n");
+            exit(0);
         }
+
     }
     // process information for gameData
     gameData[gameCounter] = roundsCounter;
