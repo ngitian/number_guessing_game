@@ -159,17 +159,22 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
 int changeMaxNumber(int maxNumber)
 {
     int result = -1;
+    char input[10];
     while (result <= 1 || result > maxNumber)
     {
-        printf("Enter a new max number > 1 and < %d: ", maxNumber);
-        scanf("%d", &result);
-        if (result <= 1)
+        printf("Enter a new max number > 1 and <= %d: ", maxNumber);
+        scanf("%s", input);
+        if (strtol(input, NULL, 10) <= 1)
         {
-            printf("Max number can not be less than min number\n");
+            printf("Max number can not be less than min number or has to be a number\n");
         }
-        else if (result > maxNumber)
+        else if (strtol(input, NULL, 10) > maxNumber)
         {
-            printf("Max number can not exceed previous max number\n");
+            printf("Max number can not exceed previous max number or has to be a number\n");
+        }
+        else
+        {
+            result = strtol(input, NULL, 10);
         }
     }
     return result;
