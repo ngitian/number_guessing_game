@@ -192,11 +192,11 @@ void endGame(int gameCounter, const bool* gameResult, const int* gameData)
         printf("game %d: ", i + 1);
         if (gameResult[i])
         {
-            printf("lose");
+            printf("win");
         }
         else
         {
-            printf("win");
+            printf("lose");
         }
         printf(" with %d rounds\n", gameData[i]);
     }
