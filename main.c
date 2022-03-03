@@ -56,8 +56,8 @@ int main()
         // run different options depends on the menu input
         if (strcmp(menuInput,"1") == 0)
         {
-            ++gameCounter;
             startGame(maxNumber, gameCounter, gameResult, gameData);
+            ++gameCounter;
         } 
         else if (strcmp(menuInput,"2") == 0)
         {
@@ -138,19 +138,20 @@ void startGame(int maxNumber, int gameCounter, bool* gameResult, int* gameData)
 
     // realloc if gameData and gameResult can't hold anymore memory
     size_t size = sizeof(gameData) / sizeof(int);
+    printf("size: %lu\n", size);
     if (size <= gameCounter)
     {
-        printf("Before, size:%lu, gameData size:%lu\n", size, sizeof(gameData));
+        printf("Before, gameData size:%lu\n", sizeof(gameData));
         gameData = realloc(gameData, size * 2 * sizeof(int));
         gameResult = realloc(gameResult, size * 2 * sizeof(bool));
-        printf("After, size:%lu, gameData size:%lu\n", size, sizeof(gameData));
+        printf("After, gameData size:%lu\n", sizeof(gameData));
 
         for (int i=0; i < gameCounter; ++i)
         {
-            printf("%d\n", gameData[i]);
+            printf("gamedata[%d] %d\n",i , gameData[i]);
         }
     }
-    // process information for gameData;
+    // process information for gameData
     gameData[gameCounter] = roundsCounter;
 
 }
