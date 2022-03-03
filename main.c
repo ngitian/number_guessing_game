@@ -38,6 +38,21 @@ int main()
     int* gameData = malloc(50 * sizeof(int));
     int arraySize = 50;
 
+    // read from file if exist and valid, if not, use default 10
+    const char NUMBER_FILE[] = "maxNumber.txt";
+    char buff[255];
+    FILE *fp;
+    fp = fopen(NUMBER_FILE, "a");
+    fclose(fp);
+    fp = fopen(NUMBER_FILE, "r");
+    fscanf(fp, "%s", buff);
+    fclose(fp);
+    int file_result = strtol(buff, NULL, 10);
+    if (file_result > 1 && file_result < 32767)
+    {
+        maxNumber = file_result;
+    }
+
     // check whether malloc is successful
     if (gameResult == NULL || gameData == NULL)
     {
@@ -80,6 +95,11 @@ int main()
     free(gameResult);
     free(gameData);
     
+    // persist user save number
+    fp = fopen(NUMBER_FILE, "w");
+    fprintf(fp, "%d", maxNumber);
+    fclose(fp);
+
     return 0;
 
 }
